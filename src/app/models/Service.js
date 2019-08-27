@@ -14,6 +14,9 @@ const ServiceSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    createdBy:{
+        type: String,
+    },
 
 });
 

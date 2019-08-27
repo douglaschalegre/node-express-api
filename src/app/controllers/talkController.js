@@ -1,7 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 
-const talk = require('../models/Talk');
+const Talk = require('../models/Talk');
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.use(authMiddleware);
 
 router.get('/', async (req,res)=>{
     try {
-        const talks = await talk.find().populate('dev');
+        const talks = await Talk.find();
 
         return res.send({ talks });
     } catch (err) {
@@ -30,7 +30,7 @@ router.post('/', async (req,res)=> {
 
 router.get('/:talkId', async (req,res)=> {
     try {
-        const talk = await talk.findById(req.params.talkId).populate('dev');
+        const talk = await Talk.findById(req.params.talkId);
 
         return res.send({ talk });
     } catch (err) {
@@ -44,7 +44,7 @@ router.put('/:talkId', async (req,res)=> {
 
 router.delete('/:talkId', async (req,res)=> {
     try {
-        const talk = await talk.findByIdAndRemove(req.params.talkId);
+        const talk = await Talk.findByIdAndRemove(req.params.talkId);
 
         return res.send();
     } catch (err) {
