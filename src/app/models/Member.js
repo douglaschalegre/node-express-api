@@ -20,6 +20,10 @@ const MemberSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
+    profileImg:{
+        type: String,
+        require: true;
+    }
     createdAt:{
         type: Date,
         default: Date.now,
