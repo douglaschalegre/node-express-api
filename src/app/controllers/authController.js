@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypy = require('bcryptjs');
 
 const jwt = require('jsonwebtoken');
-const authConfig = require('../config/auth');
+const authConfig = require('../../config/auth');
 
 const Dev = require('../models/Dev');
 
