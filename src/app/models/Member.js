@@ -26,7 +26,6 @@ const MemberSchema = new mongoose.Schema({
     },
     social:{
         type:[String],
-        require: true,
     },
     createdAt:{
         type: Date,
