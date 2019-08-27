@@ -18,6 +18,10 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
+    serviceType:{
+        type: [String],
+        require: true,
+    },
     createdAt:{
         type: Date,
         default: Date.now,
