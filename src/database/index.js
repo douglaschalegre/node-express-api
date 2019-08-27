@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const uri = 'mongodb+srv://hookly:<password>@hooklyapi-vd574.gcp.mongodb.net/';
+const uri = 'mongodb+srv://hookly:<pass>@hooklyapi-vd574.gcp.mongodb.net/';
 mongoose.connect(uri,  {dbName: 'noderest'});
 mongoose.Promise = global.Promise;
 
