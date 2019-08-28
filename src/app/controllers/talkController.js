@@ -1,10 +1,10 @@
 const express = require('express');
-const authMiddleware = require('../middlewares/auth');
+//const authMiddleware = require('../middlewares/auth');
 const Talk = require('../models/Talk');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+//router.use(authMiddleware);
 
 
 
