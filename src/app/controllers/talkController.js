@@ -1,14 +1,12 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
-const cors = require('cors');
 const Talk = require('../models/Talk');
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-//Config do CORS
-app.use(cors());
+
 
 router.get('/', async (req,res)=>{
     try {

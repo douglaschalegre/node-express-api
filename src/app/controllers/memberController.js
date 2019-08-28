@@ -7,20 +7,8 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-//Config do CORS
-var whitelist = ['http://hookly.com.br'];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}
 
-
-router.get('/',cors(corsOptions), async (req,res)=>{
+router.get('/', async (req,res)=>{
     try {
         const member = await Member.find();
 
@@ -31,7 +19,7 @@ router.get('/',cors(corsOptions), async (req,res)=>{
     
 });
 
-router.post('/',cors(corsOptions), async (req,res)=> {
+router.post('/', async (req,res)=> {
     try{
         const member = await Member.create({ ...req.body, createdBy: req.devId });
         return res.send({ member });
@@ -41,7 +29,7 @@ router.post('/',cors(corsOptions), async (req,res)=> {
 });
 
 
-router.get('/:memberId',cors(corsOptions), async (req,res)=> {
+router.get('/:memberId', async (req,res)=> {
     try {
         const member = await Member.findById(req.params.memberId);
 
@@ -51,11 +39,11 @@ router.get('/:memberId',cors(corsOptions), async (req,res)=> {
     }
 });
 
-router.put('/:memberId',cors(corsOptions), async (req,res)=> {
+router.put('/:memberId', async (req,res)=> {
     res.send({ user: req.devId });
 });
 
-router.delete('/:memberId',cors(corsOptions), async (req,res)=> {
+router.delete('/:memberId', async (req,res)=> {
     try {
         const member = await Member.findByIdAndRemove(req.params.memberId);
 
