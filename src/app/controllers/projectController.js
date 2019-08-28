@@ -1,13 +1,25 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
-
+const cors = require('cors');
 const Project = require('../models/Project');
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-router.get('/', async (req,res)=>{
+//Config do CORS
+var whitelist = ['http://hookly.com.br'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}
+
+router.get('/',cors(corsOptions), async (req,res)=>{
     try {
         const projects = await Project.find().populate('dev');
 
@@ -18,7 +30,7 @@ router.get('/', async (req,res)=>{
     
 });
 
-router.post('/', async (req,res)=> {
+router.post('/',cors(corsOptions), async (req,res)=> {
     try{
         const project = await Project.create({ ...req.body, createdBy: req.devId });
         return res.send({ project })
@@ -28,7 +40,7 @@ router.post('/', async (req,res)=> {
 });
 
 
-router.get('/:projectId', async (req,res)=> {
+router.get('/:projectId',cors(corsOptions), async (req,res)=> {
     try {
         const project = await Project.findById(req.params.projectId).populate('dev');
 
@@ -38,11 +50,11 @@ router.get('/:projectId', async (req,res)=> {
     }
 });
 
-router.put('/:projectId', async (req,res)=> {
+router.put('/:projectId',cors(corsOptions), async (req,res)=> {
     res.send({ user: req.devId });
 });
 
-router.delete('/:projectId', async (req,res)=> {
+router.delete('/:projectId',cors(corsOptions), async (req,res)=> {
     try {
         const project = await Project.findByIdAndRemove(req.params.projectId);
 

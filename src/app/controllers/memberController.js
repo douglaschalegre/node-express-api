@@ -1,13 +1,26 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
-
+const cors = require('cors');
 const Member = require('../models/Member');
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-router.get('/', async (req,res)=>{
+//Config do CORS
+var whitelist = ['http://hookly.com.br'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}
+
+
+router.get('/',cors(corsOptions), async (req,res)=>{
     try {
         const member = await Member.find();
 
@@ -18,7 +31,7 @@ router.get('/', async (req,res)=>{
     
 });
 
-router.post('/', async (req,res)=> {
+router.post('/',cors(corsOptions), async (req,res)=> {
     try{
         const member = await Member.create({ ...req.body, createdBy: req.devId });
         return res.send({ member });
@@ -28,7 +41,7 @@ router.post('/', async (req,res)=> {
 });
 
 
-router.get('/:memberId', async (req,res)=> {
+router.get('/:memberId',cors(corsOptions), async (req,res)=> {
     try {
         const member = await Member.findById(req.params.memberId);
 
@@ -38,11 +51,11 @@ router.get('/:memberId', async (req,res)=> {
     }
 });
 
-router.put('/:memberId', async (req,res)=> {
+router.put('/:memberId',cors(corsOptions), async (req,res)=> {
     res.send({ user: req.devId });
 });
 
-router.delete('/:memberId', async (req,res)=> {
+router.delete('/:memberId',cors(corsOptions), async (req,res)=> {
     try {
         const member = await Member.findByIdAndRemove(req.params.memberId);
 

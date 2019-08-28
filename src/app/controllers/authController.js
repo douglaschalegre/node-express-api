@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypy = require('bcryptjs');
-
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
 
@@ -15,8 +15,20 @@ function generateJwtToken(params = { }){
     });
 }
 
+//Config do CORS
+var whitelist = ['http://hookly.com.br'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}
+
 // Registro de um novo usuario
-router.post('/register', async (req,res)=>{
+router.post('/register',cors(corsOptions), async (req,res)=>{
     const { email } = req.body;
 
     try{
@@ -38,7 +50,7 @@ router.post('/register', async (req,res)=>{
 });
 
 // Autenticaçao de um usuario
-router.post('/authenticate', async (req,res)=>{
+router.post('/authenticate',cors(corsOptions), async (req,res)=>{
     const { email, password } = req.body;
 
     const dev = await Dev.findOne({ email }).select('+password');
