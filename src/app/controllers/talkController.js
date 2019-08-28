@@ -8,18 +8,9 @@ const router = express.Router();
 router.use(authMiddleware);
 
 //Config do CORS
-var whitelist = ['http://hookly.com.br'];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}
+app.use(cors());
 
-router.get('/',cors(corsOptions), async (req,res)=>{
+router.get('/', async (req,res)=>{
     try {
         const talks = await Talk.find();
 
@@ -30,7 +21,7 @@ router.get('/',cors(corsOptions), async (req,res)=>{
     
 });
 
-router.post('/',cors(corsOptions), async (req,res)=> {
+router.post('/', async (req,res)=> {
     try{
         const talk = await Talk.create({ ...req.body, createdBy: req.devId });
         return res.send({ talk })
@@ -40,7 +31,7 @@ router.post('/',cors(corsOptions), async (req,res)=> {
 });
 
 
-router.get('/:talkId',cors(corsOptions), async (req,res)=> {
+router.get('/:talkId', async (req,res)=> {
     try {
         const talk = await Talk.findById(req.params.talkId);
 
@@ -50,11 +41,11 @@ router.get('/:talkId',cors(corsOptions), async (req,res)=> {
     }
 });
 
-router.put('/:talkId',cors(corsOptions), async (req,res)=> {
+router.put('/:talkId', async (req,res)=> {
     res.send({ user: req.devId });
 });
 
-router.delete('/:talkId',cors(corsOptions), async (req,res)=> {
+router.delete('/:talkId', async (req,res)=> {
     try {
         const talk = await Talk.findByIdAndRemove(req.params.talkId);
 
