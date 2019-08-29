@@ -40,7 +40,13 @@ router.get('/:talkId', async (req,res)=> {
 });
 
 router.put('/:talkId', async (req,res)=> {
-    res.send({ user: req.devId });
+    try {
+        const talk = await Talk.findByIdAndUpdate(req.params.talkId);
+
+        return res.send({ talk });
+    } catch (err) {
+        return res.status(400).send({ error: 'Error updating talk'});
+    }
 });
 
 router.delete('/:talkId', async (req,res)=> {

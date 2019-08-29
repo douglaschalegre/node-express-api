@@ -40,7 +40,13 @@ router.get('/:projectId', async (req,res)=> {
 });
 
 router.put('/:projectId', async (req,res)=> {
-    res.send({ user: req.devId });
+    try {
+        const project = await Project.findByIdAndUpdate(req.params.projectId);
+
+        return res.send({ project });
+    } catch (err) {
+        return res.status(400).send({ error: 'Error updating project'});
+    }
 });
 
 router.delete('/:projectId', async (req,res)=> {

@@ -40,7 +40,13 @@ router.get('/:memberId', async (req,res)=> {
 });
 
 router.put('/:memberId', async (req,res)=> {
-    res.send({ user: req.devId });
+    try {
+        const member = await Member.findByIdAndUpdate(req.params.memberId);
+
+        return res.send({ member });
+    } catch (err) {
+        return res.status(400).send({ error: 'Error updating member'});
+    }
 });
 
 router.delete('/:memberId', async (req,res)=> {

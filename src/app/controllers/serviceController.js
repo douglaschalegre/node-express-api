@@ -40,7 +40,13 @@ router.get('/:serviceId', async (req,res)=> {
 });
 
 router.put('/:serviceId', async (req,res)=> {
-    res.send({ user: req.devId });
+    try {
+        const service = await Service.findByIdAndUpdate(req.params.serviceId);
+
+        return res.send({ service });
+    } catch (err) {
+        return res.status(400).send({ error: 'Error updating service'});
+    }
 });
 
 router.delete('/:serviceId', async (req,res)=> {
